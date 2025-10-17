@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stopwatch</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: #f5f5f5;
+      }
+      .stopwatch-container {
+        text-align: center;
+        background: #fff;
+        padding: 32px 48px;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      }
+      #time {
+        font-size: 2.5em;
+        margin-bottom: 22px;
+        font-weight: bold;
+      }
+      button {
+        font-size: 1em;
+        padding: 10px 22px;
+        margin: 6px;
+        border-radius: 6px;
+        border: none;
+        background: #3578e5;
+        color: white;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #2456a8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stopwatch-container">
+      <div id="time">00:00:00</div>
+      <button id="startStop">Start</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <script>
+      let timer;
+      let isRunning = false;
+      let seconds = 0;
+
+      function updateDisplay() {
+        const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        document.getElementById('time').textContent = `${hrs}:${mins}:${secs}`;
+      }
+
+      document.getElementById('startStop').onclick = function() {
+        if (!isRunning) {
+          timer = setInterval(() => {
+            seconds++;
+            updateDisplay();
+          }, 1000);
+          this.textContent = 'Stop';
+        } else {
+          clearInterval(timer);
+          this.textContent = 'Start';
+        }
+        isRunning = !isRunning;
+      };
+
+      document.getElementById('reset').onclick = function() {
+        clearInterval(timer);
+        isRunning = false;
+        seconds = 0;
+        document.getElementById('startStop').textContent = 'Start';
+        updateDisplay();
+      };
+
+      updateDisplay();
+    </script>
+  </body>
+</html>
